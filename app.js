@@ -8,7 +8,7 @@ app.use(express.json());  // Middleware to parse JSON bodies
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',  //MySQL username
+    user: 'User',  //MySQL username
     password: 'root',  //MySQL password
     database: 'finalproject'  
 });
@@ -75,7 +75,7 @@ app.delete('/songs/:id', (req, res) => {
 });
 
 // Server listening on port 3000
-const port = 3000;
+const port = 3500;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
