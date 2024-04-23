@@ -1,0 +1,15 @@
+{
+  "name": "final-project-2830",
+  "version": "1.0.0",
+  "description": "This project aims to develop a web application that enables users to create personalized music playlists by connecting to a database of songs from various artists and genres. Users will be able to log in with their username and password, browse through a curated collection of songs, and add or remove songs from their playlists.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
