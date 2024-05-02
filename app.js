@@ -7,21 +7,11 @@ app.use(express.json());  // Middleware to parse JSON bodies
 
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'User',  //MySQL username
-    password: 'root',  //MySQL password
-    database: 'finalproject'  
+    host: 'db', 
+    user: 'User',
+    password: 'root',
+    database: 'finalproject'
 });
-
-//Connect to the MySQL server
-db.connect(err => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the MySQL server.');
-});
-
 //GET endpoint to fetch all songs
 app.get('/songs', (req, res) => {
     db.query('SELECT * FROM songs', (err, results) => {

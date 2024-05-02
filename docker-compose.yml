@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: finalproject
+      MYSQL_USER: User
+      MYSQL_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./finalproject.sql:/docker-entrypoint-initdb.d/finalproject.sql  # Mount the SQL dump file.
+    ports:
+      - "3306:3306"
+
+  web:
+    build: .
+    command: node app.js
+    depends_on:
+      - db
+    ports:
+      - "3500:3500"
+
+volumes:
+  db_data:
