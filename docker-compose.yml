@@ -1,27 +1,27 @@
 version: '3.8'
 
 services:
-    db:
-        image: mysql:8
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: finalproject
-            MYSQL_USER: User
-            MYSQL_PASSWORD: root
-        volumes:
-            - db_data:/var/lib/mysql
-            - ./finalproject.sql:/docker-entrypoint-initdb.d/finalproject.sql  # Mount the SQL dump file.
-        ports:
-            - "3306:3306"
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: finalproject
+      MYSQL_USER: User
+      MYSQL_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./finalproject.sql:/docker-entrypoint-initdb.d/finalproject.sql  # Mount the SQL dump file.
+    ports:
+      - "3306:3306"
 
-    web:
-        build: ./frontend  # Points to directory containing the Dockerfile for React app
-        ports:
-            - "3000:3000"  # Maps port 3000 to container port 3000
-        depends_on:
-            - db  # Ensures the database service starts first
-        environment:
-            - REACT_APP_API_URL=http://localhost:3500  # Or adjust to fit backend setup
+  web:
+    build: ./frontend  # Ensure this is the correct path to your Dockerfile
+    ports:
+      - "3000:3000"  # Maps port 3000 of the container to port 3000 of the host
+    depends_on:
+      - db  # Ensures that db is started first
+    environment:
+      - REACT_APP_API_URL=http://localhost:3500  # Adjust based on actual API URL if different
 
 volumes:
-    db_data:
+  db_data:  # Preserves or shares the MySQL database between container recreations

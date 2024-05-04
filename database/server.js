@@ -2,13 +2,8 @@ const express = require('express');
 const { getAllSongs, addSong, updateSong, deleteSong } = require('./models/dbQueries');
 
 const app = express();
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json());
 
-// Set up CORS middleware for local development (optional but often necessary)
-const cors = require('cors');
-app.use(cors());
-
-// Define routes
 app.get('/songs', (req, res) => {
     getAllSongs((err, results) => {
         if (err) {
@@ -20,18 +15,16 @@ app.get('/songs', (req, res) => {
     });
 });
 
-app.post('/register', (req, res) => {
-    const { username, password } = req.body;
-    // Assuming `registerUser` adds the user to the database and handles hashing
-    registerUser({ username, password }, (err, result) => {
+app.post('/songs', (req, res) => {
+    addSong(req.body, (err, result) => {
         if (err) {
-            console.error('Registration error:', err);
-            return res.status(500).json({ message: "Failed to create account" });
+            console.error('Error adding song:', err);
+            res.status(500).send('Database error');
+            return;
         }
-        return res.status(201).json({ message: "Account successfully created" });
+        res.status(201).send(`Song added successfully with ID: ${result.insertId}`);
     });
 });
-
 
 app.put('/songs/:id', (req, res) => {
     updateSong(req.params.id, req.body, (err, result) => {
@@ -44,6 +37,19 @@ app.put('/songs/:id', (req, res) => {
     });
 });
 
+// Assuming this is in your server.js or a routes file
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+    registerUser({ username, password }, (err, result) => {
+        if (err) {
+            console.error('Registration error:', err);
+            return res.status(500).json({ message: "Failed to create account, error occurred" });
+        }
+        return res.status(201).json({ message: "Account successfully created" });
+    });
+});
+
+
 app.delete('/songs/:id', (req, res) => {
     deleteSong(req.params.id, (err, result) => {
         if (err) {
@@ -55,20 +61,7 @@ app.delete('/songs/:id', (req, res) => {
     });
 });
 
-// Default route for handling not found
-app.use((req, res) => {
-    res.status(404).send('Not Found');
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Server Error');
-});
-
-// Set server to listen on a port
-const port = process.env.PORT || 3500;
+const port = 3500;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
-
