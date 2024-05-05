@@ -1,12 +1,11 @@
-const express = require('express');
-const { getAllSongs, addSong, updateSong, deleteSong } = require('./models/dbQueries');
+import express from 'express';
+import { getAllSongs, addSong, updateSong, deleteSong } from './database/dbQueries.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use(cors()); // Set up CORS middleware for local development (optional but often necessary)
 
-// Set up CORS middleware for local development (optional but often necessary)
-const cors = require('cors');
-app.use(cors());
 
 // Define routes
 app.get('/songs', (req, res) => {
@@ -20,6 +19,7 @@ app.get('/songs', (req, res) => {
     });
 });
 
+
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
     // Assuming `registerUser` adds the user to the database and handles hashing
@@ -31,7 +31,6 @@ app.post('/register', (req, res) => {
         return res.status(201).json({ message: "Account successfully created" });
     });
 });
-
 
 app.put('/songs/:id', (req, res) => {
     updateSong(req.params.id, req.body, (err, result) => {
@@ -55,6 +54,8 @@ app.delete('/songs/:id', (req, res) => {
     });
 });
 
+
+
 // Default route for handling not found
 app.use((req, res) => {
     res.status(404).send('Not Found');
@@ -71,4 +72,3 @@ const port = process.env.PORT || 3500;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
-

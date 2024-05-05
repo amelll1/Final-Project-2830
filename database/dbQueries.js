@@ -1,8 +1,8 @@
-const mysql = require('mysql');
+import mysql from 'mysql';
 
 const db = mysql.createConnection({
-    host: 'db',
-    user: 'User',
+    host: 'localhost',
+    user: 'root',
     password: 'root',
     database: 'finalproject'
 });
@@ -104,15 +104,9 @@ const getSongsInPlaylist = (playlistName, callback) => {
     `;
     db.query(sql, [playlistName], callback);
 };
-const [successMessage, setSuccessMessage] = useState('');
 
-// In your handleSubmit after successful registration:
-setSuccessMessage(response.data.message);
 
-// In your component render method:
-{successMessage && <div className="success-message">{successMessage}</div>}
-
-module.exports = {
+export {
     getAllSongs,
     addSong,
     updateSong,
